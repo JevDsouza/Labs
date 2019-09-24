@@ -1,0 +1,14 @@
+String Operations
+Program to perform string operations without using string handling functions
+a)length of string
+b) string concatenation
+b) comparision
+c) insertion of substring
+d) deletion of substring
+
+Define a class student with data members to store name, roll no, grade. Member functions to read display and sort student info according to roll no of student. Array of objects as arguments
+
+define time class, data members hour, min, sec. 
+functions 1) add
+2)difference between two objects of class time
+3) display and read
