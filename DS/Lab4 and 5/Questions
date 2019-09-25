@@ -1,0 +1,13 @@
+Queues and sparse matrices
+
+1 write a program to implement circular queu using array
+2 Find the fast transpose of a sparse matrix using array of objects
+
+additional
+transpose of a sparse matrix
+
+
+lab 5
+1 input infix expression, convert to postfix for and display. operands can be single character
+2 evaluate postfix expression , input is postfix
+3 write a program that converts a post fix expression to a fully parenthisized infix expression
