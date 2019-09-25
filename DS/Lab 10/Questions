@@ -1,0 +1,12 @@
+Trees
+
+1 User defined functions
+    in order traversal (iterative)
+    post order traversal (iterative)
+    pre order traversal (itterative)
+    print the paret of given element
+    depth of tree
+    print ancestors
+    count the number of leaf nodes in a binary tree
+    
+2 Recursive function to 1) Create binary tree 2) Print binary tree
