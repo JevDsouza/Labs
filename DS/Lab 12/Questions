@@ -1,0 +1,10 @@
+Write a program to sort a given list of elements using 
+i) quick sort
+2) Heap sort
+3) Radix sort
+4) Merge sort
+
+
+
+One program contains all of them within the same code
+and the rest four programs have the functions individually
