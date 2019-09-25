@@ -1,0 +1,15 @@
+Dobly linked Lists
+
+1 Write a program to concatente two doubly linked lists X1 and X2. After concatenation, X1 is a pointer to first node of the resulting lists
+2 Implement Stack and queue using singly linked lists
+3 Menu driven code 
+ 1) Insert element before another element
+ 2) Insert element after another element
+ 3) Delete a given element
+ 4) Traverse the list
+ 5) Reverse the list
+ 
+ 
+ Additional 
+ 1 Write a Program to immplement union and intersection of two doubly linked lists
+ 2 Implement addition of two long positive integer numbers
