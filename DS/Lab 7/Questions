@@ -1,0 +1,12 @@
+Linked List
+Menu driven program, performs following operations on linked list
+
+i) Insert element before another element
+ii) Insert element after another element
+iii) delete  element
+iv) Traverse list
+v) Reverse list
+vi)Sort list
+vii) Delete every alternate node
+viii) insert element in sorted list
+
