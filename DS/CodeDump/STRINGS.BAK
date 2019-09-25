@@ -1,0 +1,19 @@
+#include<iostream.h>
+int length(char [50]);
+void main()
+{
+ char str1[50];
+ int i, length;
+ cout<<"\n Enter the string: ";
+ cin>>str1;
+ length = length(str1);
+ cout<<"\n Length of the string is: "<<length;
+}
+
+int length(char c[50])
+{
+ for(int i =0 ; c[i] != '\0';i++)
+ {;
+ }
+ return i;
+}

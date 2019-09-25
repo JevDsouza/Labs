@@ -1,0 +1,84 @@
+#include<iostream.h>
+void Insertion(int arr[], int);
+void Selection(int arr[], int);
+void Bubble(int arr[], int);
+void main()
+{ int n; int seq[50];
+  int c;
+  do
+ {
+  cout<<"\n Enter size of array: ";
+  cin>>n;
+  cout<<"\nEnter array: ";
+  for(int i=0;i<n;i++)
+  cin>>seq[i];
+  cout<<"\n Which method would you like to use? 1. Bubble Sort 2. Insertion Sort 3. Selection Sort 4.Exit";
+  cin>>c;
+
+  switch(c)
+  {
+  case 1: Bubble(seq,n);
+	  break;
+  case 2: Insertion(seq,n);
+	  break;
+  case 3: Selection(seq,n);
+	  break;
+  default:cout<<"\n Invalid option";
+  }
+ } while(c!=4);
+ }
+
+  void Bubble(int x[],int size)
+  { int temp;
+   for(int i=0;i<size;i++)
+   { for(int j=0;j<size-1;j++)
+     {
+       if(x[j+1]<x[j])
+       {temp=x[j];
+       x[j]=x[j+1];
+       x[j+1]=temp;
+       }
+     }
+   }
+   cout<<"\n Array after sorting is: ";
+   for(i=0;i<size;i++)
+   cout<<" "<<x[i];
+   return;
+  }
+
+  void Insertion(int x[], int size)
+  { int key,i,j;
+    for(i=1;i<size;i++)
+    {
+     key=x[i];
+     for(j=i-1;j>=0&&key<x[j];j--)
+     x[j+1]=x[j];
+
+     x[j+1]=key;
+    }
+    cout<<"\n Array after sorting is: ";
+    for(i=0;i<size;i++)
+    cout<<" "<<x[i];
+    return;
+  }
+
+  void Selection(int x[], int size)
+  {
+   int min,i,j,temp;
+    for(i=0;i<size-1;i++)
+    { min=i;
+      for(j=i+1;j<size;j++)
+     {
+      if(x[j]<x[min])
+      min=j;
+     }
+     temp = x[i];
+     x[i]=x[min];
+     x[min]=temp;
+    }
+    cout<<"\n Array after sorting is: ";
+    for(i=0;i<size;i++)
+    cout<<" "<<x[i];
+
+    return;
+  }
