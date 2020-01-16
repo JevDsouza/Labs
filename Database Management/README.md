@@ -1,1 +1,1 @@
-Refer to the lab manual (DBSLAB file) and the respective lab folders
+Refer to the lab manual (DBS LAB file) and the respective lab folders
