@@ -1,0 +1,40 @@
+/additional q1
+//q1
+select cname from customer, orders where odate = '9-May-2015';
+
+//q2
+select ordr, count(item) as no_of_items
+from order_items
+group by ordr;
+
+//q3
+select ordr, qty
+from order_items
+where qty = (select max(qty) from order_items);
+
+//q4
+select shipdate, count(ordr) from shipment natural join order_items
+group by shipdate
+having count(*) >=1
+order by count(*) desc; 
+
+
+//q5
+delete from order_items where item = 0101;
+
+//q6
+select ordr from shipment natural join warehouse where city = 'mumbai';
+
+//q7
+get cname from customer where cname = '%a';
+
+//q8
+select cname, odramt from customer natural join orders
+order by odramt desc;
+
+//q9
+select cname, count(orders.ordr) Total 
+from orders join customer on customer.cust = orders.cust join shipment on shipment.ordr = orders.ordr
+where shipment.shipdate = '05-Apr-2019'
+group by cname 
+having count (orders.ordr)>=3;

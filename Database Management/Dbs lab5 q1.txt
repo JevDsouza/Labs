@@ -1,0 +1,192 @@
+i)
+
+create table student ( 
+regno varchar(20), 
+name varchar(50), 
+major varchar(20),
+bdate date,
+primary key(regno)
+);
+
+create table course (
+course# int,
+cname varchar(30),
+dept varchar(30),
+primary key (course#)
+);
+
+create table enroll (
+regno varchar(20),
+course# int,
+primary key (regno, course#),
+foreign key (regno) references student(regno),
+foreign key (course#) references course(course#)
+);
+
+create table text (
+book_isbn int,
+booktitle varchar(50),
+publisher varchar(50),
+author varchar(50),
+primary key (book_isbn)
+);
+
+create table book_adoption (
+course# int,
+sem int,
+book_isbn int,
+primary key (course#, book_isbn),
+foreign key (course#) references course(course#),
+foreign key (book_isbn) references text(book_isbn)
+);
+
+ii)
+
+insert into student values ('0024', 'Ignorant', 'Arts', '23-AUG-1990');
+insert into student values ('0025', 'Arrogant', 'Science', '16-SEP-1991');
+insert into student values ('0026', 'Adamant', 'History', '29-FEB-1992');
+insert into student values ('0027', 'Persistent', 'Religion', '17-OCT- 1989');
+insert into student values ('0028', 'Pondering', 'Geography', '03-APR-1994');
+
+insert into course values (1001, 'Intuitive', 'Humanity');
+insert into course values (2004, 'Climate Change', 'Passivity');
+insert into course values (1997, 'Intrigue', 'Arts');
+insert into course values (3078, 'Credibility', 'Management');
+insert into course values (1087, 'Idle', 'Humanity');
+
+insert into enroll values ('0025', 1001);
+insert into enroll values ('0025', 1087);
+insert into enroll values ('0027', 3078);
+insert into enroll values ('0026', 1087);
+insert into enroll values ('0028', 1087);
+
+insert into text values (2745, 'Dummy. You. Dummy.', 'Generic', 'Moron');
+insert into text values (3972, 'Pragmatic Dogma', 'Intrigue', 'Moron');
+insert into text values (1201, 'Intrigue and its bycauses', 'Generic', 'Imbecile');
+insert into text values (1932, 'Fashion trends for idiots', 'Plausible', 'Retard');
+insert into text values (1882, 'Earth. Dearth. Climate Wearth.', 'Imprompt', 'Lazy');
+
+insert into book_adoption values (1001, 3, 2745);
+insert into book_adoption values (1001, 7, 3972);
+insert into book_adoption values (2004, 5, 1882);
+insert into book_adoption values (3078, 3, 1932);
+insert into book_adoption values (1087, 6, 1201);
+
+iii.
+
+a)
+
+select course#, cname
+from ( 
+	select course.course#, course.cname, count(distinct book_adoption.book_isbn)
+	from course,book_adoption
+	where course.course# = book_adoption.course#
+	group by course.course#, course.cname
+	having count(distinct book_adoption.book_isbn) >= 2
+);
+
+b) 
+
+select c.dept
+from course c, book_adoption b, text 
+where c.course#=b.course# and b.book_isbn in
+(
+	select t.book_isbn 
+	from text t 
+	where t.book_isbn=b.book_isbn and t.publisher='Plausible')
+group by c.dept;
+
+c) ***** NOPE *****
+
+select regno
+from enroll natural join course T1
+where 	T1. dept = all
+(
+	select D.dept
+	from course D
+	where D.course# = T1.course#
+);
+
+select s.name
+from student s
+where s.regno in (
+	select regno 
+	from enroll e, course c 
+	where e.course# = c.course# 
+	group by regno 
+	having count(c.dept)>1
+); 
+
+d)
+
+select regno, name
+from student
+where regno not in(
+	select distinct regno
+	from enroll
+);
+
+e)
+
+select booktitle
+from text
+where book_isbn in (
+	select book_isbn 
+	from enroll natural join course natural join book_adoption
+);
+
+f)
+
+select cname 
+from ( select cname, publisher, count(distinct book_isbn) as counts
+	from course natural join book_adoption natural join text
+	group by publisher, cname
+)
+where counts >= 2;
+
+g)
+
+with total_books (reg, na, counts) as
+(
+	select regno, name, count (book_isbn) as counts
+	from student natural join enroll natural join book_adoption
+	group by regno, name
+)
+select na, counts
+from total_books
+where counts = (select max(counts) from total_books);
+
+h)
+
+select publisher, counts 
+from ( 
+	select publisher, count (book_isbn) as counts
+	from text
+	group by publisher
+);
+
+i)
+
+select name 
+from student
+where regno in (
+	select regno 
+	from enroll natural join book_adoption 
+	group by regno
+);
+
+
+j)
+
+create view tempor as
+select name
+from student natural join enroll natural join book_adoption
+group by name;
+
+select * from tempor;
+
+
+
+
+
+

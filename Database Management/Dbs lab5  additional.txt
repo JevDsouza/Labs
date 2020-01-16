@@ -1,0 +1,62 @@
+i)
+
+select c.cname
+from customer c
+where not exists (
+	select d.city 
+	from customer d 
+	where c.cust#=d.cust#
+);
+
+ii)
+
+select cust#, cname , sum(ordamt)
+from customer natural join orders
+group by cust#, cname 
+having sum(ordamt) = (select max(ordamt) from orders);
+
+iii)
+
+select o.order#
+from orders o
+where order# not in (
+	select order# 
+	from shipment
+);
+
+iv)
+
+select item#
+from item
+where item# not in (
+	select item# 
+	from order_items
+);
+
+v)
+
+select * from (
+	select count(cust#) 
+	from orders natural join order_items 
+	group by cust# 
+	order by count(cust#) desc
+) 
+where rownum=1;
+
+vi)
+
+select order#
+from orders
+where order#  in (
+	select order# 
+	from shipment 
+	where shipdate <> '08-JUL-2018'
+);
+
+vii)
+
+select cust#
+from (
+	select cust#
+	from orders natural join order_items natural join shipment
+	where
