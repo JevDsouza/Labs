@@ -1,0 +1,101 @@
+1)Create the above tables by properly specifying the primary keys and the foreign
+keys.
+
+create table Person (
+driver_id# varchar(30),
+name varchar(50), 
+Address varchar(100),
+primary key (driver_id#));
+
+create table car (
+regno varchar(20), 
+model varchar(30), 
+Year int,
+primary key (regno));
+
+create table accident(
+report_number int, 
+accd_date date, 
+location varchar(50),
+primary key (report_number));
+
+create table OWNS (
+driver_id# varchar(30) references person, 
+regno varchar(20) references car,
+primary key (driver_id#, regno));
+
+create table PARTICIPATED (
+driver_id# varchar(30) references person,
+regno varchar(20) references car,
+report_number int references accident, 
+damage_amount int,
+primary key (driver_id#, regno, report_number));
+
+2)Enter at least five tuples for each relation.
+
+insert into PERSON values('0045','Jev','17-103/15');
+insert into PERSON values('0046','RohitL','17-104/15');
+insert into PERSON values('0047','Roy','17-108/16');
+insert into PERSON values('0048','Aman','17-109/16');
+insert into PERSON values('0049','Rita','17-103/16');
+
+insert into CAR values('9000','HONDA',1995);
+insert into CAR values('9001','FIAT',1996);
+insert into CAR values('9002','MARUTI',1997);
+insert into CAR values('9003','DATSUN',1998);
+insert into CAR values('9004','TATA',1999);
+
+
+
+
+insert into Accident values(12,'12-Jan-1899','Hyderabad');
+insert into Accident values(13,'12-Feb-1979','Hyderabad');
+insert into Accident values(14,'12-Apr-1989','Hyderabad');
+insert into Accident values(15,'12-May-1889','Hyderabad');
+insert into Accident values(16,'12-June-1991','Hyderabad');
+
+insert into OWNS values('0045','9000');
+insert into OWNS values('0046','9001');
+insert into OWNS values('0047','9002');
+insert into OWNS values('0048','9003');
+insert into OWNS values('0049','9004');
+
+insert into PARTICIPATED values('0045','9000',12,10000);
+insert into PARTICIPATED values('0046','9001',13,15000);
+insert into PARTICIPATED values('0047','9002',12,20000);
+insert into PARTICIPATED values('0048','9003',14,25000);
+insert into PARTICIPATED values('0049','9004',15,30000);
+
+3)Update the damage amount to 25000 for the car with a specific reg. no in a
+PARTICIPATED table with report number 12.
+
+update participated
+set damage_amount = 25000
+where report_number=12;
+
+4)Delete the accident and related information that took place in a specific year.
+delete from accident
+where extract(year from accd_date) = '1899'
+
+delete from Participated
+where report_number in (
+select report_number from accident
+where extract(year from accd_date) = '1899');
+
+
+delete from participated
+where report_number in(
+select report_number from accident
+where extract ( year from accd_date)= '1899');
+
+
+delete from accident 
+where extract (year from accd_date)='1989);
+
+5) Alter table to add and delete an attribute.
+alter table person add hi varchar(20);
+alter table person drop column hi;
+
+6)Alter table to add Check constraint.
+alter table person add age int;
+alter table person add check(age>18);

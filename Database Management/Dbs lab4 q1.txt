@@ -1,0 +1,98 @@
+1)Create the above tables by properly specifying the primary keys and the foreign
+keys.
+
+create table Person (
+driver_id# varchar(30),
+name varchar(50), 
+Address varchar(100),
+primary key (driver_id#));
+
+create table car (
+regno varchar(20), 
+model varchar(30), 
+Year int,
+primary key (regno));
+
+create table accident(
+report_number int, 
+accd_date date, 
+location varchar(50),
+primary key (report_number));
+
+create table OWNS (
+driver_id# varchar(30) references person, 
+regno varchar(20) references car,
+primary key (driver_id#, regno));
+
+create table PARTICIPATED (
+driver_id# varchar(30) references person,
+regno varchar(20) references car,
+report_number int references accident, 
+damage_amount int,
+primary key (driver_id#, regno, report_number));
+
+
+1. 
+select count(participated.regno) as t
+from participated, accident
+where participated.report_number=accident.report_number;
+
+2.
+select count(participated.regno) as count
+from participated, car
+where participated.regno=car.regno and car.model= 'TATA';
+
+3.
+ 
+select person.name as n, count(participated.report_number) as no, sum(damage_amount) as t
+from person, participated
+where person.driver_id#= participated.driver_id#
+group by person.name, participated.driver_id#
+order by 1/t desc;
+
+4.
+select owns.driver_id#
+from owns, participated
+where owns.driver_id#= participated.driver_id#
+group by owns.driver_id#
+having count(participated.driver_id#)>1;
+
+5.
+select driver_id# from person
+minus 
+select driver_id# from participated;
+
+add
+
+CUSTOMER (cust#: int, cname: varchar(50), city: varchar(30))
+ORDERS (order#:int, odate: date, cust#: int, ordamt: int)
+ITEM (item#: int, unitprice: int)
+ORDER_ITEMS (order#:int, item#:int, qty:int,)
+SHIPMENT (order#: int, warehouse#: int, shipdate: date)
+WAREHOUSE (warehouse#:int, city: varchar(30))
+
+
+1.
+select cname
+from customer, orders
+where odate='9-may-2015';
+
+2.
+select count(item#), order#
+from order_items
+group by order#;
+
+3
+select order#, max(iqty)
+from order_items
+group by order#;
+
+4.
+
+select shipdate, count(order#) from shipment natural join order_items
+group by shipdate
+having count(*) >=1
+order by count(*) desc; 
+
+5. 
+delete from order_items where item = 11;

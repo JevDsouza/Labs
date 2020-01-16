@@ -1,0 +1,122 @@
+1)Create the above tables by properly specifying the primary keys and the foreign
+keys.
+
+CUSTOMER (cust#: int, cname: varchar(50), city: varchar(30))
+ORDERS (order#:int, odate: date, cust#: int, ordamt: int)
+ITEM (item#: int, unitprice: int)
+ORDER_ITEMS (order#:int, item#:int, qty:int,)
+SHIPMENT (order#: int, warehouse#: int, shipdate: date)
+WAREHOUSE (warehouse#:int, city: varchar(30))
+
+
+create table CUSTOMER (
+cust# int, 
+cname varchar(50), 
+city varchar(30),
+primary key(cust#));
+
+create table Orders(
+order# int,
+odate date,
+cust# int references customer, 
+ordamt int,
+primary key (order#));
+
+create table ITEM (
+item# int,
+unitprice int,
+primary key (item#));
+
+create table order_items(
+order# int references orders,
+item# int references Item,
+qty int,
+primary key(order#, item#));
+
+create table Warehouse(
+warehouse# int, 
+city varchar(30),
+primary key (warehouse#));
+
+create table Shipment(
+order# int references orders, 
+warehouse# int references warehouse, 
+shipdate date,
+primary key(order#, warehouse#));
+
+
+2. Enter at least five tuples for each relation.
+
+insert into customer values (1,'jev','mangalore');
+insert into customer values (2,'rahul','mumbai');
+insert into customer values (3,'rita','bangalore');
+insert into customer values (4,'riya','pune');
+insert into customer values (5,'rohan','mumbai');
+
+insert into orders values (10, '01-jan-2019',1,100);
+insert into orders values (11, '03-mar-2017',1,100);
+insert into orders values (12, '01-may-2018',1,100);
+insert into orders values (13, '07-june-2016',2,100);
+insert into orders values (14, '11-dec-2019',2,200);
+insert into orders values (15, '12-nov-2012',3,100);
+insert into orders values (16, '08-may-2012',4,500);
+insert into orders values (17, '09-oct-2014',5,100);
+
+insert into item values(11,100);
+insert into item values(12,200);
+insert into item values(13,300);
+insert into item values(14,400);
+insert into item values(15,500);
+
+insert into order_items values(10,11,1);
+insert into order_items values(11,12,5);
+insert into order_items values(12,13,10);
+insert into order_items values(13,14,15);
+insert into order_items values(14,15,20);
+insert into order_items values(15,15,20);
+insert into order_items values(16,15,20);
+insert into order_items values(17,15,20);
+
+insert into warehouse values(1,'mumbai');
+insert into warehouse values(2,'mumbai');
+insert into warehouse values(3,'mumbai');
+insert into warehouse values(4,'mumbai');
+insert into warehouse values(5,'mumbai');
+
+
+insert into shipment values (10,1,'01-jan-2019');
+insert into shipment values (11,1,'03-mar-2017');
+insert into shipment values (12,1,'01-may-2018');
+insert into shipment values (13,1,'07-june-2016');
+insert into shipment values (14,1,'11-dec-2019');
+insert into shipment values (15,1,'12-nov-2012');
+insert into shipment values (16,1,'08-may-2012');
+insert into shipment values (17,1,'09-oct-2014');
+
+
+1.Produce a listing: CUSTNAME, No_of_Orders, AVG_ORDER_AMT,
+where the middle column is the total number of orders by the customer and
+the last column is the average order amount for that customer.
+
+
+
+select cname as Custname,  count(distinct orders.order#),avg(ordamt) as avga
+from customer, orders,order_items
+where customer.cust#=orders.cust# 
+group by cname;
+
+
+2.List the order no for the orders that were shipped from all the warehouses
+that the company has in a specific city.
+select orders.order#
+from orders, shipment, warehouse
+where warehouse.city='Pune' and orders.order#= shipment.order# and warehouse.warehouse#= shipment.warehouse#;
+
+
+3.Decrease the order_amount by 10% if ordered quantity is greater than ten
+or else by 5% using Case construct.
+
+update orders o
+set o.ordamt=case when (select qty from order_items oi where o.order#=oi.order#)>10 then o.ordamt*0.9 else o.ordamt*0.95 end;
+
+
