@@ -1,0 +1,10 @@
+D:\170953017\Notepadd\Notepadd\bin\Debug\Notepadd.exe.config
+D:\170953017\Notepadd\Notepadd\obj\Debug\Notepadd.csprojResolveAssemblyReference.cache
+D:\170953017\Notepadd\Notepadd\obj\Debug\Notepadd.Form1.resources
+D:\170953017\Notepadd\Notepadd\obj\Debug\Notepadd.Form2.resources
+D:\170953017\Notepadd\Notepadd\obj\Debug\Notepadd.Properties.Resources.resources
+D:\170953017\Notepadd\Notepadd\obj\Debug\Notepadd.csproj.GenerateResource.Cache
+D:\170953017\Notepadd\Notepadd\bin\Debug\Notepadd.exe
+D:\170953017\Notepadd\Notepadd\bin\Debug\Notepadd.pdb
+D:\170953017\Notepadd\Notepadd\obj\Debug\Notepadd.exe
+D:\170953017\Notepadd\Notepadd\obj\Debug\Notepadd.pdb
