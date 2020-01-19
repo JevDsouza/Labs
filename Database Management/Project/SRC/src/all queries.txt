@@ -1,0 +1,157 @@
+create table station (
+station_no int,
+station_name varchar(50),
+arrival_time varchar(50),
+primary key(station_no));
+
+create table train_status(
+train_no int,
+b_seat1 int,
+b_seat2 int,
+a_seat1 int,
+a_seat2 int,
+w_seat1 int,
+w_seat2 int,
+fare1 float,
+fare2 float,
+primary key(train_no));
+
+ create table TICKET(
+ticket_id varchar(50),
+user_id int,
+status varchar(50),
+train_no int,
+primary key(ticket_id),
+foreign key(user_id) references user2(user_id),
+foreign key(train_no) references TRAIN(train_no));
+
+create table PASSENGER(
+passenger_id varchar(50) ,
+pnr_no varchar(50),
+age varchar(50),
+gender varchar(50),
+user_id int,
+reservation_status char,
+seat_number varchar(50),
+name varchar(50),
+ticket_id varchar(50),
+primary key(passenger_id),
+foreign key(user_id) references USER2(user_id),
+foreign key(ticket_id) references TICKET(ticket_id));
+
+create table  BOOKS( 
+user_id int,
+ticket_id varchar(50),
+foreign key(user_id) references USER2(user_id),
+foreign key(ticket_id) references TICKET(ticket_id)); 
+
+create table  CANCEL(
+user_id int,
+ticket_id varchar(50),
+passenger_id varchar(50),
+foreign key(ticket_id) references TICKET(ticket_id),
+foreign key(passenger_id) references PASSENGER(passenger_id),
+foreign key(user_id) references USER2(user_id));
+
+create table  STARTS( 
+train_no int ,
+station_no int,
+primary key(train_no),
+foreign key(train_no) references TRAIN(train_no),
+foreign key(station_no) references STATION(station_no));
+
+create table  STOPS_AT( 
+train_no int,
+station_no int,
+foreign key(train_no) references TRAIN(train_no),
+foreign key(station_no) references STATION(station_no));
+
+
+select t.* from train t, starts s1 , station s where s1.train_no in ( select s2.train_no from train t1 , stops_at s2 , station st where t1.train_no = s2.train_no and s2.station_no = st.station_no and st.station_name like 'st1')and t.train_no=s1.train_no and s1.station_no = s.station_no and s.station_name like 'st2' ;
+
+create table temp(
+
+
+create or replace procedure search1(in s varchar(50) ,I d varchar(50) , IN day1 varchar(50))
+as
+
+
+
+row_tuple train%rowtype;
+begin
+select t.* into row_tuple
+from train t, starts s1 , station s 
+where s1.train_no in ( select s2.train_no from train t1 , stops_at s2 , station st 
+                       where t1.train_no = s2.train_no and s2.station_no = st.station_no and st.station_name like d )
+and t.train_no=s1.train_no and s1.station_no = s.station_no and s.station_name like s  and day=day1;
+
+
+
+end;
+/
+
+create or replace trigger cancelled3
+after delete on ticket
+for each row
+declare
+tik varchar(50);
+begin
+delete from passenger where passenger.ticket_id = :old.ticket_id ;
+delete from books where books.ticket_id=:old.ticket_id;
+end;
+/
+
+create or replace trigger status1
+after delete on ticket
+for each row
+begin
+if :old.status like 'waiting' then 
+	update train_status
+	set w_seat1=w_seat1-1
+	where train_status.train_no=:old.train_no;
+else 
+	update train_status
+	set b_seat1=b_seat1-1 , a_seat1=a_seat1+1 
+	where train_status.train_no=:old.train_no;
+end if;
+end;
+/
+	
+create or replace trigger status
+after delete on ticket
+for each row
+begin
+	update train 
+	set availability_of_seats=availability_of_seats+1
+	where train.train_no=:old.train_no; 
+end;
+/	
+	
+
+
+create or replace procedure insert1(user_id int,first_name varchar, last_name varchar,gender varchar,age varchar,
+aadhar_no varchar,city varchar,pincode varchar, password varchar , security_ques varchar,security_ans varchar)
+as
+begin
+insert into user2 values (user_id,first_name,last_name,gender,age,aadhar_no,city,pincode,password, security_ques,security_ans);
+end;
+/
+
+create or replace trigger can
+after delete on ticket
+for each row
+begin
+insert into cancel(user_id,ticket_id) values(:old.user_id,:old.ticket_id);
+end;
+/
+
+create or replace function pnr(PNR_no varchar)
+return NUMBER is
+x number;
+begin
+select train_no into x
+from ticket
+where ticket_id=PNR_no;
+return x;
+end;
+/
